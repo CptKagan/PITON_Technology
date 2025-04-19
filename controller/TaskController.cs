@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,8 +23,8 @@ namespace PITON_Project.Controllers{
         }
 
         [HttpGet("gettasks")]
-        public async Task<IActionResult> GetTasks([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10){
-            var response = await _taskService.GetTasks(pageNumber, pageSize);
+        public async Task<IActionResult> GetTasks([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery][Range(0,2)] TaskDateEnum? period = null, [FromQuery] bool? completed = null){
+            var response = await _taskService.GetTasks(pageNumber, pageSize, period, completed);
 
             return Ok(response);
         }

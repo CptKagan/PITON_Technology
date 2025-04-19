@@ -60,11 +60,11 @@ public class TaskService : ITaskService
         return new TaskResponse(task);
     }
 
-    public async Task<List<TaskResponse>> GetTasks(int pageNumber, int pageSize)
+    public async Task<List<TaskResponse>> GetTasks(int pageNumber, int pageSize, TaskDateEnum? period, bool? completed)
     {
         var userId = _currentUserService.UserId;
 
-        List<TaskItem> taskItems = await _taskRepository.GetAllAsync(userId, pageNumber, pageSize);
+        List<TaskItem> taskItems = await _taskRepository.GetAllAsync(userId, pageNumber, pageSize, period, completed);
         List<TaskResponse> response = new List<TaskResponse>();
         foreach (var item in taskItems)
         {

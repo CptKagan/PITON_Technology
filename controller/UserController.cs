@@ -37,22 +37,20 @@ namespace PITON_Project.Controllers
         [HttpGet("deneme")]
         [Authorize]
         public IActionResult GetSecret(){
-            var username = User.Identity?.Name;
             var userid = User.FindFirst("userid")?.Value;
 
             return Ok(new{
-                Message = $"Hoş geldin {username}, id'n {userid}" 
+                Message = $"Welcome, your id is: {userid}" 
             });
         }
 
         [HttpGet("denemeadmin")]
         [Authorize(Roles = "Admin")]
         public IActionResult GetSecretAdmin(){
-            var username = User.Identity?.Name;
             var userid = User.FindFirst("userid")?.Value;
 
             return Ok(new{
-                Message = $"Hoş geldin {username} ADMİN!!!, id'n {userid}" 
+                Message = $"Welcome ADMIN!, your id is: {userid}" 
             });
         }
     }

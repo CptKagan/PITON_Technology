@@ -92,9 +92,18 @@ Content‑Type: application/json
 }
 ```
 
-### Authroize
+### Authorize
 - Swagger arayüzüne giriş yaptıktan sonra, sağ üst köşede "Authorize" adlı bir buton görülecektir.
 - Başarıyla giriş yaptıktan sonra size verilen token'ı aşağıda beliren "Value:" kısmına , aşağıda verilen örnek ile doldurmanız halinde korumalı endpointlere erişim sağlayabileceksiniz.
 ```bash
 Example: "Bearer {token}" -> Authorize
+```
+
+### Görevleri Listeleme
+- pageNumber: Hangi sayfanın getirileceği bilgisi
+- pageSize: Bir sayfada kaç görev listeleneceği bilgisi
+- period: 0 -> Günlük görevler | 1 -> Haftalık görevler | 2 -> Aylık görevler
+- completed: Tamamlanmış yada tamamlanmamış görev bilgisi
+```bash
+/api/task/gettasks?pageNumber=1&pageSize=10&period=1&completed=false
 ```

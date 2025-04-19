@@ -1,6 +1,6 @@
 public interface ITaskService{
     Task<TaskResponse?> AddTask(TaskRequest taskRequest);
-    Task <List<TaskResponse>> GetTasks(int pageNumber, int pageSize);
+    Task <List<TaskResponse>> GetTasks(int pageNumber, int pageSize, TaskDateEnum? period, bool? completed);
 
     Task<TaskResponse> GetTaskByIdAsync(long id);
 
