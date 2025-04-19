@@ -5,6 +5,5 @@ obj/
 *.suo
 *.userosscache
 *.sln.docstates
-appsettings*.json
 launchSettings.json
 *.db
