@@ -53,7 +53,7 @@ http://localhost:5272
 ```
 
 ### Başlangıç Admin Kullanıcısı
-- Projede otomatik olarka aşağıdaki admin hesabı oluşturulmaktadır: 
+- Projede otomatik olarak aşağıdaki admin hesabı oluşturulmaktadır: 
 ```bash
 username: admin
 password: Admin123
