@@ -1,0 +1,10 @@
+bin/
+obj/
+*.user
+*.vs/
+*.suo
+*.userosscache
+*.sln.docstates
+appsettings*.json
+launchSettings.json
+*.db
