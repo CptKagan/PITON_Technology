@@ -49,7 +49,7 @@ dotnet run
 
 Swagger üzerinden kullanabilirsiniz:
 ```bash
-http://localhost:5272
+http://localhost:port
 ```
 
 ### Başlangıç Admin Kullanıcısı

@@ -79,6 +79,14 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope()){
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    if(db.Database.CanConnect()){
+        db.Database.EnsureDeleted();
+    }
+    db.Database.EnsureCreated();
+}
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -86,19 +94,19 @@ app.UseAuthorization();
 app.MapControllers();
 
 // java create-drop equiv
-if (app.Environment.IsDevelopment())
-{
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureDeleted();  // var olan DB’yi sil
-    db.Database.EnsureCreated();  // modeli DB’ye uygula
+// if (app.Environment.IsDevelopment())
+// {
+//     using var scope = app.Services.CreateScope();
+//     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    // db.Database.EnsureDeleted();  // var olan DB’yi sil
+    // db.Database.EnsureCreated();  // modeli DB’ye uygula
 
     app.UseSwagger();
     app.UseSwaggerUI(c => {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Görev Yöneticisi API V1");
         c.RoutePrefix = string.Empty;
     });
-}
+// }
 
 app.Lifetime.ApplicationStopping.Register(() =>
 {
