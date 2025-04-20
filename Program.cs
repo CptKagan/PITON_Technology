@@ -21,18 +21,23 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddControllers();
 
+// JWT
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 var jwtSettings = builder.Configuration.GetSection("JWT").Get<JWTSettings>();
 
-if(jwtSettings == null){
+if (jwtSettings == null)
+{
     throw new Exception("JWT settings are missing in configuration!");
 }
 
-builder.Services.AddAuthentication(options =>{
+builder.Services.AddAuthentication(options =>
+{
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>{
-    options.TokenValidationParameters = new TokenValidationParameters{
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
@@ -47,13 +52,16 @@ builder.Services.AddAuthentication(options =>{
 builder.Services.AddSingleton<ITokenService, TokenService>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo{
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
         Title = "Görev Yöneticisi API",
         Version = "v1"
     });
 
-    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme{
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
         Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer abc123\"",
         Name = "Authorization",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
@@ -79,9 +87,11 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope()){
+using (var scope = app.Services.CreateScope())
+{
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    if(db.Database.CanConnect()){
+    if (db.Database.CanConnect())
+    {
         db.Database.EnsureDeleted();
     }
     db.Database.EnsureCreated();
@@ -93,20 +103,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// java create-drop equiv
-// if (app.Environment.IsDevelopment())
-// {
-//     using var scope = app.Services.CreateScope();
-//     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    // db.Database.EnsureDeleted();  // var olan DB’yi sil
-    // db.Database.EnsureCreated();  // modeli DB’ye uygula
+// Swagger
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Görev Yöneticisi API V1");
+    c.RoutePrefix = string.Empty;
+});
 
-    app.UseSwagger();
-    app.UseSwaggerUI(c => {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Görev Yöneticisi API V1");
-        c.RoutePrefix = string.Empty;
-    });
-// }
 
 app.Lifetime.ApplicationStopping.Register(() =>
 {
@@ -115,10 +119,11 @@ app.Lifetime.ApplicationStopping.Register(() =>
     db.Database.EnsureDeleted();
 });
 
-
+// Seed admin
 using var scope2 = app.Services.CreateScope();
 var repository = scope2.ServiceProvider.GetRequiredService<IUserRepository>();
-if(!await repository.ExistsByUsernameAsync("admin")){
+if (!await repository.ExistsByUsernameAsync("admin"))
+{
     var admin = new User();
     admin.UserName = "admin";
     admin.Email = "admin@admin.com";
