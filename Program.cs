@@ -111,14 +111,6 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-
-app.Lifetime.ApplicationStopping.Register(() =>
-{
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureDeleted();
-});
-
 // Seed admin
 using var scope2 = app.Services.CreateScope();
 var repository = scope2.ServiceProvider.GetRequiredService<IUserRepository>();
